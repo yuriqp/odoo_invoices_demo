@@ -13,9 +13,11 @@
     ],
     
     'data': [
+        'templates.xml'
     ],
     
     'qweb' : [
+        'templates.xml'
     ],
     
     'js': [

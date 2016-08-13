@@ -1,0 +1,24 @@
+<openerp>
+	<data>		
+        <template id="user">
+			<div> <t t-esc="user.name"/> </div>
+        </template>
+        
+        <template id="invoices">
+        	<div>
+			<t t-foreach="invoices" t-as="invoice">
+              <p><t t-esc="invoice.name"/></p>
+            </t>
+            </div>
+        </template>
+        
+		<template id="index">
+			<title> Invoices list </title>
+			<p>User:</p>
+			<t t-call="bloopark_demo.user"/>
+			<p>Invoices:</p>
+			<t t-call="bloopark_demo.invoices"/>
+		</template>
+
+ 	</data>
+</openerp>

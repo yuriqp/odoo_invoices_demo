@@ -10,9 +10,12 @@ class DemoController(http.Controller):
         user = users_obj.browse(uid)
         
         invoice_obj = pool['account.invoice']
-        invoices_ids = invoice_obj.search([('user_id', '=', user.id)])
+        invoices = invoice_obj.search([('user_id', '=', user.id)])
         
-        return "Hello, {}! \n You have {} invoices".format(user.name, len(invoices_ids))
+        return http.request.render('bloopark_demo.index', {
+            'user': user,
+            'invoices': invoices
+        })
 
 #     @http.route('/academy/academy/objects/', auth='public')
 #     def list(self, **kw):
