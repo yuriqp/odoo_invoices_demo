@@ -9,7 +9,8 @@
     """,
     
     'depends': [
-        'sale'
+        'sale',
+        'website'
     ],
     
     'data': [
@@ -17,7 +18,8 @@
     ],
     
     'qweb' : [
-        'templates.xml'
+        'templates.xml',
+        'static/src/*.xml'
     ],
     
     'js': [

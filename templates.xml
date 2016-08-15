@@ -1,24 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
 <openerp>
-	<data>		
+	<data>	
+        
         <template id="user">
-			<div> <t t-esc="user.name"/> </div>
+			<div class="container"> 
+				<t t-esc="user.name"/> 
+			</div>
         </template>
         
         <template id="invoices">
-        	<div>
-			<t t-foreach="invoices" t-as="invoice">
-              <p><t t-esc="invoice.name"/></p>
-            </t>
+        	<div class="container">
+				<t t-foreach="invoices" t-as="invoice">
+              		<p><t t-esc="invoice.name"/></p>
+            	</t>
             </div>
         </template>
         
 		<template id="index">
-			<title> Invoices list </title>
-			<p>User:</p>
-			<t t-call="bloopark_demo.user"/>
-			<p>Invoices:</p>
-			<t t-call="bloopark_demo.invoices"/>
+			<t t-call="website.layout">
+				
+				<div class="container">
+					<h4> User:</h4>
+				</div>
+				<t t-call="bloopark_demo.user"/>
+				<div class="container">
+					<h4>Invoices:</h4>
+				</div>
+				<t t-call="bloopark_demo.invoices"/>
+			</t>
 		</template>
-
  	</data>
 </openerp>

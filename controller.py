@@ -3,7 +3,7 @@ from openerp import http
 from openerp import models
 
 class DemoController(http.Controller):
-    @http.route('/bloopark/demo/', auth='user')
+    @http.route('/bloopark/demo/', auth='user', type='http', website=True)
     def index(self, **kw):
         uid, pool = http.request.uid, http.request.env
         users_obj = pool['res.users']
