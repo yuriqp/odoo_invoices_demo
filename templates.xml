@@ -2,33 +2,79 @@
 
 <openerp>
 	<data>	
+		<template id="demo_assets">
+			<script type="text/javascript" src="/bloopark_demo/static/src/js/vendor/jquery.min.js"></script>
+			<script type="text/javascript" src="/bloopark_demo/static/src/js/vendor/jquery.modal.js"></script>
+			<link type="text/css" rel="stylesheet" href="/bloopark_demo/static/src/css/jquery.modal.css"/>
+			<link type="text/css" rel="stylesheet" href="/bloopark_demo/static/src/css/backbone.modal.theme.css"/>
+			<link type="text/css" rel="stylesheet" href="/bloopark_demo/static/src/css/backbone.modal.css"/>
+		</template>
         
         <template id="user">
-			<div class="container"> 
-				<t t-esc="user.name"/> 
+        	<div class="container">
+				<a href="#ex1" class='btn btn-info btn-xs' rel="modal:open"> 
+					<h4><t t-esc="user.name"/></h4>
+				</a>
+			</div>
+        </template>
+        
+        <template id="modal">
+ 			<div id="ex1" style="display:none;">
+			    <div class="bbm-modal__topbar">
+			      <h3 class="bbm-modal__title"><t t-esc="user.name"/></h3>
+			    </div>
+			    <div class="bbm-modal__section">
+	    			<h4><t t-esc="user.function"/></h4>
+	    			<h4><t t-esc="user.phone"/></h4>
+	    			<h4><t t-esc="user.email"/></h4>
+			    </div>
+			    <div class="bbm-modal__bottombar">
+			      <a href="#" rel="modal:close" class="bbm-button">Ok</a>
+			    </div>
 			</div>
         </template>
         
         <template id="invoices">
         	<div class="container">
-				<t t-foreach="invoices" t-as="invoice">
-              		<p><t t-esc="invoice.name"/></p>
-            	</t>
+        		<table class="table table-bordered table-striped">
+        			<thead>
+        				<th> Reference </th>
+        				<th> Customer </th>
+        				<th> Date </th>
+        				<th> Source </th>
+        				<th> Total </th>
+        			</thead>
+        			<tbody>
+						<t t-foreach="invoices" t-as="invoice">
+              				<tr>
+              					<td><t t-esc="invoice.name"/></td>
+              					<td><t t-esc="invoice.partner_id.name"/></td>
+              					<td><t t-esc="invoice.date_invoice"/></td>
+              					<td><t t-esc="invoice.origin"/></td>
+              					<td><t t-esc="invoice.amount_total"/></td>
+              				</tr>
+            			</t>
+            		</tbody>
+            	</table>
             </div>
         </template>
         
 		<template id="index">
 			<t t-call="website.layout">
+				<t t-call-assets="bloopark_demo.demo_assets" t-js="false"/>
+				<t t-call-assets="bloopark_demo.demo_assets" t-css="false"/>
 				
-				<div class="container">
-					<h4> User:</h4>
-				</div>
 				<t t-call="bloopark_demo.user"/>
+				<t t-call="bloopark_demo.modal"/>
+				
 				<div class="container">
 					<h4>Invoices:</h4>
 				</div>
+				
 				<t t-call="bloopark_demo.invoices"/>
 			</t>
 		</template>
+		
+
  	</data>
 </openerp>

@@ -9,6 +9,7 @@ class DemoController(http.Controller):
         users_obj = pool['res.users']
         user = users_obj.browse(uid)
         
+        # Invoices that this user is responsible for
         invoice_obj = pool['account.invoice']
         invoices = invoice_obj.search([('user_id', '=', user.id)])
         

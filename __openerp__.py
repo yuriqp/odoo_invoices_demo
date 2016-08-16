@@ -6,6 +6,8 @@
     'website': '',
     'category': 'Demo',
     'description': """
+    Website (on bloopark/demo) which shows information of logged user and
+    invoices which it is responsible for.
     """,
     
     'depends': [
@@ -21,13 +23,7 @@
         'templates.xml',
         'static/src/*.xml'
     ],
-    
-    'js': [
-    ],
-    
-    'css': [
-    ],
-    
+            
     'demo': [],
     
     'application': False,
