@@ -3,11 +3,11 @@
 <openerp>
 	<data>	
 		<template id="demo_assets">
-			<script type="text/javascript" src="/bloopark_demo/static/src/js/vendor/jquery.min.js"></script>
-			<script type="text/javascript" src="/bloopark_demo/static/src/js/vendor/jquery.modal.js"></script>
-			<link type="text/css" rel="stylesheet" href="/bloopark_demo/static/src/css/jquery.modal.css"/>
-			<link type="text/css" rel="stylesheet" href="/bloopark_demo/static/src/css/backbone.modal.theme.css"/>
-			<link type="text/css" rel="stylesheet" href="/bloopark_demo/static/src/css/backbone.modal.css"/>
+			<script type="text/javascript" src="/odoo_invoices_demo/static/src/js/vendor/jquery.min.js"></script>
+			<script type="text/javascript" src="/odoo_invoices_demo/static/src/js/vendor/jquery.modal.js"></script>
+			<link type="text/css" rel="stylesheet" href="/odoo_invoices_demo/static/src/css/jquery.modal.css"/>
+			<link type="text/css" rel="stylesheet" href="/odoo_invoices_demo/static/src/css/backbone.modal.theme.css"/>
+			<link type="text/css" rel="stylesheet" href="/odoo_invoices_demo/static/src/css/backbone.modal.css"/>
 		</template>
         
         <template id="user">
@@ -61,17 +61,17 @@
         
 		<template id="index">
 			<t t-call="website.layout">
-				<t t-call-assets="bloopark_demo.demo_assets" t-js="false"/>
-				<t t-call-assets="bloopark_demo.demo_assets" t-css="false"/>
+				<t t-call-assets="odoo_invoices_demo.demo_assets" t-js="false"/>
+				<t t-call-assets="odoo_invoices_demo.demo_assets" t-css="false"/>
 				
-				<t t-call="bloopark_demo.user"/>
-				<t t-call="bloopark_demo.modal"/>
+				<t t-call="odoo_invoices_demo.user"/>
+				<t t-call="odoo_invoices_demo.modal"/>
 				
 				<div class="container">
 					<h4>Invoices:</h4>
 				</div>
 				
-				<t t-call="bloopark_demo.invoices"/>
+				<t t-call="odoo_invoices_demo.invoices"/>
 			</t>
 		</template>
 		

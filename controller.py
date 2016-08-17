@@ -13,7 +13,7 @@ class DemoController(http.Controller):
         invoice_obj = pool['account.invoice']
         invoices = invoice_obj.search([('user_id', '=', user.id)])
         
-        return http.request.render('bloopark_demo.index', {
+        return http.request.render('odoo_invoices_demo.index', {
             'user': user,
             'invoices': invoices
         })
