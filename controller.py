@@ -11,7 +11,7 @@ class DemoController(http.Controller):
         
         # Invoices that this user is responsible for
         invoice_obj = pool['account.invoice']
-        invoices = invoice_obj.search([('user_id', '=', user.id)])
+        invoices = invoice_obj.search([('user_id', '=', user.id), ('type', '=', 'in_invoice')])
         
         return http.request.render('odoo_invoices_demo.index', {
             'user': user,
