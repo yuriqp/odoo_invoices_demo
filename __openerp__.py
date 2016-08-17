@@ -26,7 +26,7 @@
             
     'demo': [],
     
-    'application': False,
+    'application': True,
     'sequence': -99,
     'installable': True,
     'active': False,
