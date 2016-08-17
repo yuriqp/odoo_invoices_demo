@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import openerp
 from openerp import http
 from openerp import models
 
@@ -18,5 +19,9 @@ class DemoController(http.Controller):
             'invoices': invoices
         })
 
-#     @http.route('/academy/academy/objects/', auth='public')
-#     def list(self, **kw):
+class LoginController(openerp.addons.web.controllers.main.Home):
+    
+    @http.route('/web/login', type='http', auth="none")
+    def web_login(self, redirect=None, **kw):
+        return super(LoginController, self).web_login(redirect='/bloopark/demo')
+    
