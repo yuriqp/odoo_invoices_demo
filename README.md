@@ -1,8 +1,10 @@
 # odoo_invoices_demo
 A simple odoo website
 
-A docker image with the app installed is available at: 
+A docker image with the app installed is available at:
+
 https://hub.docker.com/r/yuriqp/postgres_bloopark_demo/
+
 https://hub.docker.com/r/yuriqp/odoo_bloopark_demo/ (this is a requirement)
 
 Usage:
