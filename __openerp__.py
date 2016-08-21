@@ -12,7 +12,6 @@
     
     'depends': [
         'sale',
-        'website'
     ],
     
     'data': [
@@ -20,8 +19,7 @@
     ],
     
     'qweb' : [
-        'templates.xml',
-        'static/src/*.xml'
+        'templates.xml'
     ],
             
     'demo': [],
