@@ -29,6 +29,7 @@ class DemoController(http.Controller):
          
     @http.route('/bloopark/user/save/<model("res.users"):user>', type='json')
     def user_save(self, user):
+        http.request.jsonrequest['function'] = http.request.jsonrequest.pop('position')
         user.write(http.request.jsonrequest)
         
         return json.dumps({'Message': 'Ok'})    
