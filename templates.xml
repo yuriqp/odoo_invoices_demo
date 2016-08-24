@@ -19,6 +19,7 @@
 			<script type="text/javascript" src="/odoo_invoices_demo/static/src/js/invoices.js"></script>
 			<script type="text/javascript">
 				var user = new User({
+					id: "<t t-esc="user.id"/>",
 					name: "<t t-esc="user.name"/>",
 					position: "<t t-esc="user.function"/>",
 					email: "<t t-esc="user.email"/>",

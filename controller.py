@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import openerp
+import openerp, json
 from openerp import http
 from openerp import models
 
@@ -18,6 +18,21 @@ class DemoController(http.Controller):
             'user': user,
             'invoices': invoices
         })
+        
+    @http.route('/bloopark/user/<model("res.users"):user>', type='http')
+    def user(self, user):
+        return json.dumps({'id': user.id,
+                           'name': user.name, 
+                           'position': user.function,
+                           'email': user.email, 
+                           'phone': user.phone})   
+         
+    @http.route('/bloopark/user/save/<model("res.users"):user>', type='json')
+    def user_save(self, user):
+        user.write(http.request.jsonrequest)
+        
+        return json.dumps({'Message': 'Ok'})    
+        
 
 class LoginController(openerp.addons.web.controllers.main.Home):
     

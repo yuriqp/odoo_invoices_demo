@@ -8,7 +8,9 @@ MyApp.addRegions({
 
 // Models
 
-User = Backbone.Model.extend({});
+User = Backbone.Model.extend({
+  urlRoot: 'http://localhost:8069/bloopark/user',
+});
 
 Invoice = Backbone.Model.extend({});
 
@@ -18,34 +20,99 @@ Invoices = Backbone.Collection.extend({
 
 // Views
 
+var getUserInfoTemplate = function(user){
+  var modal_tmpl_html = `
+    <div class='bbm-modal__topbar'>
+      <h3 class='bbm-modal__title'>User info</h3>
+    </div>
+    <div class='bbm-modal__section'>
+      <p>`+user.name+`</p>
+      <p>`+user.position+`</p>
+      <p>`+user.email+`</p>
+      <p>`+user.phone+`</p>
+    </div>
+    <div class='bbm-modal__bottombar'>
+      <a href='#' class='bbm-button open-2'>Edit</a>
+      <a href='#' class='bbm-button btn-close'>Close</a>
+    </div>
+    `;
+    return modal_tmpl_html
+}
+
+var getUserFormTemplate = function(user){
+  var modal_tmpl_html = `
+    <div class='bbm-modal__topbar'>
+      <h3 class='bbm-modal__title'>Edit User</h3>
+    </div>
+    <div class='bbm-modal__section'>
+    	<form>
+    	<label for="name">Name</label>
+    	<input id="name" type="text" class="form-control" value="`+user.name+`"/>
+    	<label for="position">Position</label>
+    	<input id="position" type="text" class="form-control" value="`+user.position+`"/>
+    	<label for="email">Name</label>
+    	<input id="email" type="text" class="form-control" value="`+user.email+`"/>
+    	<label for="phone">Phone</label>
+    	<input id="phone" type="text" class="form-control" value="`+user.phone+`"/>
+    	</form>
+    </div>
+    <div class='bbm-modal__bottombar'>
+      <a href='#' class='bbm-button btn-close submit-user'>Save</a>
+      <a href='#' class='bbm-button btn-close'>Cancel</a>
+    </div>
+    `;
+    return modal_tmpl_html
+}
+
 var user_tmpl_html = `
 <a href='#' class='open-1 bbm-button'> <%= name %> </a>
 `;
+
 UserView = Backbone.Marionette.ItemView.extend({
   template: _.template(user_tmpl_html),
   tagName: 'div',
   className: 'user_div',
+  modelEvents: {
+    'change': 'render'
+  },
   events: {
     'click .open-1': 'open_modal'
   },
   open_modal: function(){
-    var user_modal_tmpl_html = `
-    <div class='bbm-modal__topbar'>
-      <h3 class='bbm-modal__title'>User data</h3>
-    </div>
-    <div class='bbm-modal__section'>
-      <p>`+this.model.attributes.name+`</p>
-      <p>`+this.model.attributes.position+`</p>
-      <p>`+this.model.attributes.email+`</p>
-      <p>`+this.model.attributes.phone+`</p>
-    </div>
-    <div class='bbm-modal__bottombar'>
-      <a href='#' class='bbm-button'>Ok</a>
-    </div>
-    `;
+    var user_info_tmpl_html = getUserInfoTemplate(this.model.attributes);
     UserModal = Backbone.Modal.extend({
-      submitEl: '.bbm-button',
-      template: _.template(user_modal_tmpl_html)
+      submitEl: '.btn-close',
+      template: _.template(user_info_tmpl_html),
+      user_model: this.model,
+      events: {
+      	'click .open-2': 'openEdit'
+      },
+      openEdit: function(e) {
+        e.preventDefault();
+    		var user_form_tmpl_html = getUserFormTemplate(this.user_model.attributes);
+    		UserModal2 = Backbone.Modal.extend({
+    			submitEl: '.btn-close',
+    			template: _.template(user_form_tmpl_html),
+          user_model: this.user_model,
+    			events: {
+    				'click .submit-user': 'submitUser'
+    			},
+    			submitUser: function(){
+            var vals = {
+              name: $('#name').val(),
+              position: $('#position').val(),
+              email: $('#email').val(),
+              phone: $('#phone').val()
+            };
+            this.user_model.set(vals);
+            var oldRoot = this.user_model.urlRoot;
+            this.user_model.urlRoot = this.user_model.urlRoot + '/save';
+    				this.user_model.save();
+            this.user_model.urlRoot = oldRoot
+    			}
+    		});
+    	  MyApp.modalRegion.show(new UserModal2());
+      }
     });
     MyApp.modalRegion.show(new UserModal());
   }
@@ -89,12 +156,12 @@ InvoicesView = Backbone.Marionette.CompositeView.extend({
 // Initialization
 
 MyApp.addInitializer(function(options){
-  
+
   var userView = new UserView({
   	model: options.user
   });
   MyApp.userRegion.show(userView);
-  
+
   var invoicesView = new InvoicesView({
     collection: options.invoices
   });
@@ -104,3 +171,6 @@ MyApp.addInitializer(function(options){
 $(document).ready(function(){
 	MyApp.start({user: user, invoices: invoices});
 });
+
+
+
