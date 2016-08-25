@@ -25,50 +25,80 @@ Invoices = Backbone.Collection.extend({
 });
 
 // Views
+var modal_info_tmpl_html = `
+	<div class='bbm-modal__topbar'>
+		<h3 class='bbm-modal__title'>User info</h3>
+	</div>
+	<div class='bbm-modal__section'>
+		<p><%= name %></p>
+		<p><%= position %></p>
+		<p><%= email %></p>
+		<p><%= phone %></p>
+	</div>
+	<div class='bbm-modal__bottombar'>
+		<a href='#' class='bbm-button open-2'>Edit</a>
+		<a href='#' class='bbm-button btn-close'>Close</a>
+	</div>
+`;
 
-var getUserInfoTemplate = function(user){
-	var modal_tmpl_html = `
-		<div class='bbm-modal__topbar'>
-			<h3 class='bbm-modal__title'>User info</h3>
-		</div>
-		<div class='bbm-modal__section'>
-			<p>`+user.name+`</p>
-			<p>`+user.position+`</p>
-			<p>`+user.email+`</p>
-			<p>`+user.phone+`</p>
-		</div>
-		<div class='bbm-modal__bottombar'>
-			<a href='#' class='bbm-button open-2'>Edit</a>
-			<a href='#' class='bbm-button btn-close'>Close</a>
-		</div>
-	`;
-	return modal_tmpl_html
-}
+UserModal = Backbone.Modal.extend({
+	submitEl: '.btn-close',
+	template: _.template(modal_info_tmpl_html),
+	events: {
+		'click .open-2': 'openEdit'
+	},
+	openEdit: function(e) {
+		e.preventDefault();
+		MyApp.modalRegion.show(new UserModal2({
+			model: this.model
+		}));
+	}
+});
 
-var getUserFormTemplate = function(user){
-	var modal_tmpl_html = `
-		<div class='bbm-modal__topbar'>
-			<h3 class='bbm-modal__title'>Edit User</h3>
-		</div>
-		<div class='bbm-modal__section'>
-			<form>
-			<label for="name">Name</label>
-			<input id="name" type="text" class="form-control" value="`+user.name+`"/>
-			<label for="position">Position</label>
-			<input id="position" type="text" class="form-control" value="`+user.position+`"/>
-			<label for="email">Name</label>
-			<input id="email" type="text" class="form-control" value="`+user.email+`"/>
-			<label for="phone">Phone</label>
-			<input id="phone" type="text" class="form-control" value="`+user.phone+`"/>
-			</form>
-		</div>
-		<div class='bbm-modal__bottombar'>
-			<a href='#' class='bbm-button btn-close submit-user'>Save</a>
-			<a href='#' class='bbm-button btn-close'>Cancel</a>
-		</div>
-	`;
-	return modal_tmpl_html
-}
+var modal_form_tmpl_html = `
+	<div class='bbm-modal__topbar'>
+		<h3 class='bbm-modal__title'>Edit User</h3>
+	</div>
+	<div class='bbm-modal__section'>
+		<form>
+		<label for="name">Name</label>
+		<input id="name" type="text" class="form-control" value="<%= name %>"/>
+		<label for="position">Position</label>
+		<input id="position" type="text" class="form-control" value="<%= position %>"/>
+		<label for="email">Name</label>
+		<input id="email" type="text" class="form-control" value="<%= email %>"/>
+		<label for="phone">Phone</label>
+		<input id="phone" type="text" class="form-control" value="<%= phone %>"/>
+		</form>
+	</div>
+	<div class='bbm-modal__bottombar'>
+		<a href='#' class='bbm-button btn-close submit-user'>Save</a>
+		<a href='#' class='bbm-button btn-close'>Cancel</a>
+	</div>
+`;
+
+UserModal2 = Backbone.Modal.extend({
+	submitEl: '.btn-close',
+	template: _.template(modal_form_tmpl_html),
+	events: {
+		'click .submit-user': 'submitUser'
+	},
+	ui: {
+		name: '#name',
+		position: '#position',
+		email: '#email',
+		phone: '#phone'
+	},
+	submitUser: function(){
+		this.model.set({
+			name: $('#name').val(),
+			position: $('#position').val(),
+			email: $('#email').val(),
+			phone: $('#phone').val()
+		});
+		this.model.save();
+	}
+});
 
 var user_tmpl_html = `
 <button type="button" class="btn btn-lg btn-info" aria-label="Left Align"
@@ -89,39 +119,9 @@ UserView = Backbone.Marionette.ItemView.extend({
 		'click .open-1': 'open_modal'
 	},
 	open_modal: function(){
-		var user_info_tmpl_html = getUserInfoTemplate(this.model.attributes);
-		UserModal = Backbone.Modal.extend({
-			submitEl: '.btn-close',
-			template: _.template(user_info_tmpl_html),
-			user_model: this.model,
-			events: {
-				'click .open-2': 'openEdit'
-			},
-			openEdit: function(e) {
-				e.preventDefault();
-				var user_form_tmpl_html = getUserFormTemplate(this.user_model.attributes);
-				UserModal2 = Backbone.Modal.extend({
-					submitEl: '.btn-close',
-					template: _.template(user_form_tmpl_html),
-					user_model: this.user_model,
-					events: {
-						'click .submit-user': 'submitUser'
-					},
-					submitUser: function(){
-						var vals = {
-							name: $('#name').val(),
-							position: $('#position').val(),
-							email: $('#email').val(),
-							phone: $('#phone').val()
-						};
-						this.user_model.set(vals);
-						this.user_model.save();
-					}
-				});
-				MyApp.modalRegion.show(new UserModal2());
-			}
-		});
-		MyApp.modalRegion.show(new UserModal());
+		MyApp.modalRegion.show(new UserModal({
+			model: this.model
+		}));
 	},
 	onRender: function(){
 		$('[data-toggle="popover"]').popover({html: true, trigger: 'focus'});
