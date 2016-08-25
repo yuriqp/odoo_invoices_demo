@@ -19,7 +19,7 @@ class DemoController(http.Controller):
             'invoices': invoices
         })
         
-    @http.route('/bloopark/user/<model("res.users"):user>', type='http')
+    @http.route('/bloopark/user/<model("res.users"):user>', type='http', auth='user')
     def user(self, user):
         return json.dumps({'id': user.id,
                            'name': user.name, 
@@ -27,7 +27,7 @@ class DemoController(http.Controller):
                            'email': user.email, 
                            'phone': user.phone})   
          
-    @http.route('/bloopark/user/save/<model("res.users"):user>', type='json')
+    @http.route('/bloopark/user/save/<model("res.users"):user>', type='json', auth='user')
     def user_save(self, user):
         http.request.jsonrequest['function'] = http.request.jsonrequest.pop('position')
         user.write(http.request.jsonrequest)

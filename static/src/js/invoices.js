@@ -10,6 +10,12 @@ MyApp.addRegions({
 
 User = Backbone.Model.extend({
 	urlRoot: 'http://localhost:8069/bloopark/user',
+	sync: function(method, model, options) {
+		if (method==='update'){
+        options.url = model.urlRoot + '/save/' + model.get('id');
+		}
+		return Backbone.sync(method, model, options);
+  }
 });
 
 Invoice = Backbone.Model.extend({});
@@ -109,10 +115,7 @@ UserView = Backbone.Marionette.ItemView.extend({
 							phone: $('#phone').val()
 						};
 						this.user_model.set(vals);
-						var oldRoot = this.user_model.urlRoot;
-						this.user_model.urlRoot = this.user_model.urlRoot + '/save';
 						this.user_model.save();
-						this.user_model.urlRoot = oldRoot;
 					}
 				});
 				MyApp.modalRegion.show(new UserModal2());
