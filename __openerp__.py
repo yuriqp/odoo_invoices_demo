@@ -12,18 +12,17 @@
     
     'depends': [
         'sale',
+        'web'
     ],
     
     'data': [
         'templates.xml'
     ],
     
-    'qweb' : [
-        'templates.xml'
-    ],
+    'qweb' : [],
             
     'demo': [],
-    
+
     'application': True,
     'sequence': -99,
     'installable': True,

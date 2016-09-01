@@ -12,7 +12,8 @@ User = Backbone.Model.extend({
 	urlRoot: 'http://localhost:8069/bloopark/user',
 	sync: function(method, model, options) {
 		if (method==='update'){
-        options.url = model.urlRoot + '/save/' + model.get('id');
+		    // Changing the url to connect to the proper controller
+            options.url = model.urlRoot + '/save/' + model.get('id');
 		}
 		return Backbone.sync(method, model, options);
   }
@@ -25,6 +26,7 @@ Invoices = Backbone.Collection.extend({
 });
 
 // Views
+
 var modal_info_tmpl_html = `
 	<div class='bbm-modal__topbar'>
 		<h3 class='bbm-modal__title'>User info</h3>
@@ -101,17 +103,24 @@ UserModal2 = Backbone.Modal.extend({
 });
 
 var user_tmpl_html = `
-<button type="button" class="btn btn-lg btn-info" aria-label="Left Align"
-	data-toggle="popover" title="Menu"
-	data-content="<a href='#' class='open-1' > Info </a>">
-	<span class="glyphicon glyphicon-th-large" aria-hidden="true"></span> <%- name %>
-</button>
+	<li>
+		<a href="#" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+			<img src="http://localhost:8069/web/binary/image?model=res.users&field=image_small&id=<%- id %>"/>
+			<%- name %>
+			<span class=" fa fa-angle-down">
+			</span>
+		</a>
+		<ul class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="userDropdown">
+			<li><a href='#' class='open-1' > Profile </a></li>
+			<li><a href='http://localhost:8069/web' > Back to Odoo </a></li>
+		</ul>
+	</li>
 `;
 
 UserView = Backbone.Marionette.ItemView.extend({
 	template: _.template(user_tmpl_html),
-	tagName: 'div',
-	className: 'user_div',
+	tagName: 'ul',
+	className: 'nav navbar-nav navbar-right',
 	modelEvents: {
 		'change': 'render',
 	},
@@ -123,9 +132,6 @@ UserView = Backbone.Marionette.ItemView.extend({
 			model: this.model
 		}));
 	},
-	onRender: function(){
-		$('[data-toggle="popover"]').popover({html: true, trigger: 'focus'});
-	}
 });
 
 var invoice_tmpl_html = `
@@ -143,12 +149,12 @@ InvoiceView = Backbone.Marionette.ItemView.extend({
 
 var invoices_tmpl_html = `
 <thead>
-	<tr>
-		<th>Name</th>
-		<th>Customer</th>
-		<th>Date</th>
-		<th>Source</th>
-		<th>Amount</th>
+	<tr class="headings">
+		<th class="column-title">Name</th>
+		<th class="column-title">Customer</th>
+		<th class="column-title">Date</th>
+		<th class="column-title">Source</th>
+		<th class="column-title">Amount</th>
 	</tr>
 </thead>
 <tbody>
@@ -158,7 +164,7 @@ var invoices_tmpl_html = `
 InvoicesView = Backbone.Marionette.CompositeView.extend({
 	tagName: "table",
 	id: "invoices_id",
-	className: "table table-bordered table-striped",
+	className: "table table-striped jambo_table",
 	template: _.template(invoices_tmpl_html),
 	childView: InvoiceView,
 });
@@ -180,7 +186,7 @@ MyApp.addInitializer(function(options){
 
 $(document).ready(function(){
 	MyApp.start({user: user, invoices: invoices});
-	$('[data-toggle="popover"]').popover({html: true, trigger: 'focus'});
+	$('body').addClass("nav-md footer_fixed menu_fixed");
 });
 
 

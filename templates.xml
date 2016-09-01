@@ -1,53 +1,107 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <openerp>
-	<data>	
-        <template id="odoo_invoices_demo.assets_backend" inherit_id="web.assets_backend">
-            <xpath expr="." position="inside">
-    			<script type="text/javascript" src="/odoo_invoices_demo/static/src/lib/backbone.marionette.js"></script>
-            </xpath>
-        </template>
-        
-        <template id="assets_demo"> 
-        	<link type="text/css" rel="stylesheet" href="/odoo_invoices_demo/static/src/css/backbone.modal.css"/>
-    		<link type="text/css" rel="stylesheet" href="/odoo_invoices_demo/static/src/css/backbone.modal.theme.css"/>
-    		<script type="text/javascript" src="/odoo_invoices_demo/static/src/lib/backbone.modal.js"></script>
-    		<script type="text/javascript" src="/odoo_invoices_demo/static/src/lib/backbone.marionette.modals.js"></script>
-        </template>
-        
-		<template id="myJS">
-			<script type="text/javascript" src="/odoo_invoices_demo/static/src/js/invoices.js"></script>
-			<script type="text/javascript">
-				var user = new User({
-					id: "<t t-esc="user.id"/>",
-					name: "<t t-esc="user.name"/>",
-					position: "<t t-esc="user.function"/>",
-					email: "<t t-esc="user.email"/>",
-					phone: "<t t-esc="user.phone"/>"});            
-				var invoices = new Invoices([
-					<t t-foreach="invoices" t-as="invoice">
-              			{name: 		"<t t-esc="invoice.name"/>",
-              			 customer: 	"<t t-esc="invoice.partner_id.name"/>",
-              			 date: 		"<t t-esc="invoice.date_invoice"/>",
-              			 source: 	"<t t-esc="invoice.origin"/>",
-              			 currency: 	"<t t-esc="invoice.currency_id.symbol"/>",
-              			 amount: 	"<t t-esc="invoice.amount_total"/>"},
-              		</t>
-              		]);
-			</script>
+	<data>
+		<template id="odoo_invoices_demo.assets_backend" inherit_id="web.assets_backend">
+    	<xpath expr="." position="inside">
+				<script type="text/javascript" src="/odoo_invoices_demo/static/src/lib/backbone.marionette.js"></script>
+    	</xpath>
 		</template>
 
-		<template id="index">
-			<t t-call-assets="web.assets_common"/>
-			<t t-call-assets="web.assets_backend"/>
-			<t t-call-assets="odoo_invoices_demo.assets_demo"/>	
-			<t t-call="odoo_invoices_demo.myJS"/>
-			
-			<div id="user_container" class="container"></div>
-			<div id="invoices_container" class="container"></div>
-			<div id="modal_container"></div>
-			
-		</template>
-		
+	<template id="assets_demo">
+		<link type="text/css" rel="stylesheet" href="/odoo_invoices_demo/static/src/css/backbone.modal.css"/>
+		<link type="text/css" rel="stylesheet" href="/odoo_invoices_demo/static/src/css/backbone.modal.theme.css"/>
+		<script type="text/javascript" src="/odoo_invoices_demo/static/src/lib/backbone.modal.js"></script>
+		<script type="text/javascript" src="/odoo_invoices_demo/static/src/lib/backbone.marionette.modals.js"></script>
+
+		<link type="text/css"  href="/odoo_invoices_demo/static/src/css/custom.min.css" rel="stylesheet"/>
+	</template>
+
+	<template id="myJS">
+		<script type="text/javascript" src="/odoo_invoices_demo/static/src/lib/custom.min.js"></script>
+		<script type="text/javascript" src="/odoo_invoices_demo/static/src/js/invoices.js"></script>
+		<script type="text/javascript">
+			var user = new User({
+				id: "<t t-esc="user.id"/>",
+				name: "<t t-esc="user.name"/>",
+				position: "<t t-esc="user.function"/>",
+				email: "<t t-esc="user.email"/>",
+				phone: "<t t-esc="user.phone"/>"});
+			var invoices = new Invoices([
+				<t t-foreach="invoices" t-as="invoice">
+	      			{name: 		"<t t-esc="invoice.name"/>",
+	      			 customer: 	"<t t-esc="invoice.partner_id.name"/>",
+	      			 date: 		"<t t-esc="invoice.date_invoice"/>",
+	      			 source: 	"<t t-esc="invoice.origin"/>",
+	      			 currency: 	"<t t-esc="invoice.currency_id.symbol"/>",
+	      			 amount: 	"<t t-esc="invoice.amount_total"/>"},
+	      		</t>
+	      		]);
+		</script>
+	</template>
+
+	<template id="index">
+		<t t-call-assets="web.assets_common"/>
+		<t t-call-assets="web.assets_backend"/>
+		<t t-call-assets="odoo_invoices_demo.assets_demo"/>
+		<t t-call="odoo_invoices_demo.myJS"/>
+
+		<div class="container body">
+			<div class="main_container">
+				<div class="col-md-3 left_col">
+					<div class="left_col scroll-view">
+						<div class="navbar nav_title">
+							<a href="#" class="site_title">
+								<span>
+									Bloopark Demo
+								</span>
+							</a>
+						</div>
+						<div class="clearfix">
+						</div>
+					</div>
+				</div>
+				<div class="top_nav">
+					<div id="user_container" class="nav_menu">
+					</div>
+				</div>
+				<div class="right_col" role="main">
+					<div class="page-title">
+						<div class="title_left">
+							<h3>Supplier Invoices</h3>
+						</div>
+					</div>
+					<div class="clearfix"> </div>
+					<div class="row">
+						<div class="col-md-12 col-sm-12 col-xs-12">
+							<div class="x_panel">
+								<div class="x_title">
+									<h2> Invoices: </h2>
+									<div class="clearfix"></div>
+								</div>
+
+								<div class="x_content">
+									<div id="invoices_container" class="table-responsive">
+									</div>
+								</div>
+							</div>
+						</div>
+
+
+					</div>
+				</div>
+				<footer>
+					<div class="pull-right">
+						Bloopark Demo
+					</div>
+					<div class="clearfix">
+					</div>
+				</footer>
+			</div>
+		</div>
+		<div id="modal_container"></div>
+
+	</template>
+
  	</data>
 </openerp>
